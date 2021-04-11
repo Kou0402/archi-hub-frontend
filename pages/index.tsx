@@ -1,11 +1,12 @@
 import React from 'react'
 import { NextPage } from 'next'
+import { Hero } from 'components/page/top/Hero'
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <main className="text-lg">Hello Next!!</main>
-    </div>
+    <main className="text-lg">
+      <Hero></Hero>
+    </main>
   )
 }
 
