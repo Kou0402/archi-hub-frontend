@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   return (
     <main className="text-lg">
       <Hero></Hero>
-      <section className="bg-light">
+      <section className="bg-lightest">
         <ArchiCard {...archiCardProps}></ArchiCard>
         <ArchiCard {...archiCardProps}></ArchiCard>
       </section>
