@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 export type ArchiCardProps = {
   appTitle: string
@@ -14,7 +15,11 @@ export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
         <img src="/web-icon.svg"></img>
       </a>
       <div className="ml-5">
-        <h1 className="text-2xl">{props.appTitle}</h1>
+        <Link href="/articles/[id]" as="/articles/testId">
+          <a>
+            <h1 className="text-2xl">{props.appTitle}</h1>
+          </a>
+        </Link>
         <ul className="flex text-sm">
           <li>{props.appType}</li>
           <li className="ml-3">{props.appScale}</li>
