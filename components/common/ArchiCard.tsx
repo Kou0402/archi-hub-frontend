@@ -5,7 +5,7 @@ export type ArchiCardProps = {
   appTitle: string
   appType: string
   appScale: string
-  appElements: Array<string>
+  appElements: string[]
 }
 
 export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
