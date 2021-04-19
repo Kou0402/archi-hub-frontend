@@ -2,6 +2,7 @@ import React from 'react'
 import { NextPage } from 'next'
 import { ArticleHeader, ArticleHeaderProps } from 'components/page/articles/ArticleHeader'
 import { ArchiList, ArchiListProps } from 'components/page/articles/ArchiList'
+import { ArchiDescription } from 'components/page/articles/ArchiDescription'
 
 const Article: NextPage = () => {
   const articleHeaderProps: ArticleHeaderProps = {
@@ -22,9 +23,12 @@ const Article: NextPage = () => {
     archiAreaType: 'インフラ',
     archiElements: ['Vercel', 'Heroku'],
   }
+  const archiDescriptionProps: ArchiDescriptionProps = {
+    archiDescription: 'アーキテクチャの解説アーキテクチャの解説アーキテクチャの解説',
+  }
 
   return (
-    <main className="pt-2 pl-2">
+    <main className="p-2">
       <ArticleHeader {...articleHeaderProps}></ArticleHeader>
       <div className="mt-2">
         <ArchiList {...frontArchiListProps}></ArchiList>
@@ -34,6 +38,9 @@ const Article: NextPage = () => {
       </div>
       <div className="mt-2">
         <ArchiList {...infraArchiListProps}></ArchiList>
+      </div>
+      <div>
+        <ArchiDescription {...archiDescriptionProps}></ArchiDescription>
       </div>
     </main>
   )
