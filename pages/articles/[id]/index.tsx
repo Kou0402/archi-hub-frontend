@@ -2,7 +2,7 @@ import React from 'react'
 import { NextPage } from 'next'
 import { ArticleHeader, ArticleHeaderProps } from 'components/page/articles/ArticleHeader'
 import { ArchiList, ArchiListProps } from 'components/page/articles/ArchiList'
-import { ArchiDescription } from 'components/page/articles/ArchiDescription'
+import { ArchiDescription, ArchiDescriptionProps } from 'components/page/articles/ArchiDescription'
 
 const Article: NextPage = () => {
   const articleHeaderProps: ArticleHeaderProps = {
