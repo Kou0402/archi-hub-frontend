@@ -47,8 +47,8 @@ export const MultipleTextField: React.FC<MultipleTextFieldProps> = (props) => {
         id={props.label}
         value={inputValue}
         className="rounded-lg border-transparent flex-1 appearance-none border border-lighter
-          w-full py-2 px-4 bg-white placeholder-light shadow-sm text-base
-          focus:outline-none focus:ring-2 focus:ring-main focus:border-transparent"
+          w-full py-2 px-2 bg-white placeholder-light shadow-sm text-base
+          focus:outline-none focus:ring-2 focus:ring-main"
         placeholder={props.placeholder}
         onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
           setInputValue(e.target.value)

@@ -8,12 +8,12 @@ export type SelectFieldProps = {
 
 export const SelectField: React.FC<SelectFieldProps> = (props) => {
   return (
-    <label className="text-gray-700" htmlFor={props.label}>
+    <label htmlFor={props.label}>
       {props.label}
       <select
         id={props.label}
-        className="block w-full py-2 px-3 border border-lighter bg-white rounded-md shadow-sm
-          focus:outline-none focus:ring-main focus:border-main"
+        className="block w-full py-2 px-1 border border-lighter bg-white rounded-md shadow-sm
+          focus:outline-none focus:ring-2 focus:ring-main text-base"
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => props.setState(e.target.value)}
       >
         {props.options.map((option, i) => {
