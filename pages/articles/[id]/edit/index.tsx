@@ -4,6 +4,7 @@ import { TextField, TextFieldProps } from 'components/atom/TextField'
 import { SelectField, SelectFieldProps } from 'components/atom/SelectField'
 import { MultipleTextField, MultipleTextFieldProps } from 'components/atom/MultipleTextField'
 import { TextareaField, TextareaFieldProps } from 'components/atom/TextareaField'
+import { BaseButton, BaseButtonProps } from 'components/atom/BaseButton'
 
 const Edit: NextPage = () => {
   const [appTitle, setAppTitle] = useState<string>('')
@@ -83,32 +84,42 @@ const Edit: NextPage = () => {
     placeholder: '',
     setState: setAppDescription,
   }
+  const publishButtonProps: BaseButtonProps = {
+    buttonText: '公開する',
+    buttonColor: 'main',
+    handleClick: () => {
+      console.log('公開する')
+    },
+  }
 
   return (
     <main className="p-2 text-lg">
       <div>
         <TextField {...appTitleTextFieldProps}></TextField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <SelectField {...appTypeSelectFieldProps}></SelectField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <SelectField {...appScaleSelectFieldProps}></SelectField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <MultipleTextField {...frontArchiFieldProps}></MultipleTextField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <MultipleTextField {...backArchiFieldProps}></MultipleTextField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <MultipleTextField {...infraArchiFieldProps}></MultipleTextField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <MultipleTextField {...etcArchiFieldProps}></MultipleTextField>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         <TextareaField {...descriptionFieldProps}></TextareaField>
+      </div>
+      <div className="flex justify-center mt-2">
+        <BaseButton {...publishButtonProps}></BaseButton>
       </div>
     </main>
   )

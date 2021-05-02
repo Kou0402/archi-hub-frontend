@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
     <header className="flex items-center h-16 bg-main p-2">
       <AppLogo></AppLogo>
       <div className="ml-auto">
-        <BaseButton buttonText="ログイン" handleOnClick={login}></BaseButton>
+        <BaseButton buttonText="ログイン" buttonColor="white" handleClick={login}></BaseButton>
       </div>
     </header>
   )
