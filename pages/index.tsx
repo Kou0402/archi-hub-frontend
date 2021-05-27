@@ -2,23 +2,32 @@ import React from 'react'
 import { NextPage } from 'next'
 import { Hero } from 'components/page/top/Hero'
 import { ArchiCard, ArchiCardProps } from 'components/common/ArchiCard'
+import { API_HOST } from 'constants/const'
+import axios from 'axios'
 
-const Home: NextPage = () => {
-  const archiCardProps: ArchiCardProps = {
-    appTitle: 'アプリタイトル',
-    appType: 'Webアプリ',
-    appScale: '中規模',
-    appElements: ['React', 'Node', 'AWS', 'DynamoDB'],
-  }
+type HomeProps = {
+  archiShorts: ArchiCardProps[]
+}
+
+const Home: NextPage<HomeProps> = (props) => {
   return (
     <main className="text-lg">
       <Hero></Hero>
       <section className="bg-lightest">
-        <ArchiCard {...archiCardProps}></ArchiCard>
-        <ArchiCard {...archiCardProps}></ArchiCard>
+        {props.archiShorts.map((archiShort) => {
+          return <ArchiCard {...archiShort} key={archiShort.appId}></ArchiCard>
+        })}
       </section>
     </main>
   )
+}
+
+export const getServerSideProps = async () => {
+  const ARCHI_SHORTS_URI = `${API_HOST}/archi-shorts`
+  console.info(`GET: ${ARCHI_SHORTS_URI}`)
+  const res = await axios.get(ARCHI_SHORTS_URI)
+  console.info(`response: ${JSON.stringify(res.data)}`)
+  return { props: { archiShorts: res.data } }
 }
 
 export default Home

@@ -2,9 +2,10 @@ import React from 'react'
 import Link from 'next/link'
 
 export type ArchiCardProps = {
+  appId: string
   appTitle: string
-  appType: string
-  appScale: string
+  appType: 'Webアプリ' | 'スマホアプリ'
+  appScale: '個人開発' | '小規模' | '中規模' | '大規模'
   appElements: string[]
 }
 
