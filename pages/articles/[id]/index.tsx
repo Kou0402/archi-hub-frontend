@@ -1,49 +1,87 @@
 import React from 'react'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
+import axios from 'axios'
+import { ParsedUrlQuery } from 'querystring'
+import { API_HOST } from 'constants/const'
 import { ArticleHeader, ArticleHeaderProps } from 'components/page/articles/ArticleHeader'
 import { ArchiList, ArchiListProps } from 'components/page/articles/ArchiList'
 import { ArchiDescription, ArchiDescriptionProps } from 'components/page/articles/ArchiDescription'
 
-const Article: NextPage = () => {
-  const articleHeaderProps: ArticleHeaderProps = {
-    appTitle: 'アプリタイトル',
-    appType: 'webアプリ',
-    author: 'kou0402',
-    createdAt: new Date(),
-  }
-  const frontArchiListProps: ArchiListProps = {
-    archiAreaType: 'フロントエンド',
-    archiElements: ['React', 'Next', 'Redux', 'TypeScript', 'Tailwind'],
-  }
-  const backArchiListProps: ArchiListProps = {
-    archiAreaType: 'バックエンド',
-    archiElements: ['Node.js', 'Express', 'TypeScript'],
-  }
-  const infraArchiListProps: ArchiListProps = {
-    archiAreaType: 'インフラ',
-    archiElements: ['Vercel', 'Heroku'],
-  }
-  const archiDescriptionProps: ArchiDescriptionProps = {
-    archiDescription: 'アーキテクチャの解説アーキテクチャの解説アーキテクチャの解説',
-  }
+type ArticleProps = {
+  articleHeaderProps: ArticleHeaderProps
+  frontArchiListProps: ArchiListProps
+  backArchiListProps: ArchiListProps
+  infraArchiListProps: ArchiListProps
+  archiDescriptionProps?: ArchiDescriptionProps
+}
 
+const Article: NextPage<ArticleProps> = (props) => {
   return (
     <main className="p-2">
-      <ArticleHeader {...articleHeaderProps}></ArticleHeader>
+      <ArticleHeader {...props.articleHeaderProps}></ArticleHeader>
       <div className="mt-2">
-        <ArchiList {...frontArchiListProps}></ArchiList>
+        <ArchiList {...props.frontArchiListProps}></ArchiList>
       </div>
       <div className="mt-2">
-        <ArchiList {...backArchiListProps}></ArchiList>
+        <ArchiList {...props.backArchiListProps}></ArchiList>
       </div>
       <div className="mt-2">
-        <ArchiList {...infraArchiListProps}></ArchiList>
+        <ArchiList {...props.infraArchiListProps}></ArchiList>
       </div>
       <div>
-        <ArchiDescription {...archiDescriptionProps}></ArchiDescription>
+        <ArchiDescription {...props.archiDescriptionProps}></ArchiDescription>
       </div>
     </main>
   )
+}
+
+type PathParams = ParsedUrlQuery & {
+  id: string
+}
+type Archi = {
+  appId: string
+  appTitle: string
+  appType: 'Webアプリ' | 'スマホアプリ'
+  appScale: '個人開発' | '小規模' | '中規模' | '大規模'
+  author: string
+  createdAt: Date
+  frontElements?: string[]
+  backElements?: string[]
+  infraElements?: string[]
+  archiDescription?: string
+}
+export const getServerSideProps: GetServerSideProps<ArticleProps, PathParams> = async ({
+  params,
+}) => {
+  const ARCHI_SHORTS_URI = `${API_HOST}/archis/${params?.id}`
+  console.info(`GET: ${ARCHI_SHORTS_URI}`)
+  const res = await axios.get<Archi>(ARCHI_SHORTS_URI)
+  console.info(`response: ${JSON.stringify(res.data)}`)
+
+  const articleProps: ArticleProps = {
+    articleHeaderProps: {
+      appTitle: res.data.appTitle,
+      appType: res.data.appType,
+      author: res.data.author,
+      createdAt: res.data.createdAt,
+    },
+    frontArchiListProps: {
+      archiAreaType: 'フロントエンド',
+      archiElements: res.data.frontElements,
+    },
+    backArchiListProps: {
+      archiAreaType: 'バックエンド',
+      archiElements: res.data.backElements,
+    },
+    infraArchiListProps: {
+      archiAreaType: 'インフラ',
+      archiElements: res.data.infraElements,
+    },
+    archiDescriptionProps: {
+      archiDescription: res.data.archiDescription,
+    },
+  }
+  return { props: articleProps }
 }
 
 export default Article

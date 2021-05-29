@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 export type ArticleHeaderProps = {
   appTitle: string
-  appType: string
+  appType: 'Webアプリ' | 'スマホアプリ'
   author: string
   createdAt: Date
 }

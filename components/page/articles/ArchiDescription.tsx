@@ -1,7 +1,7 @@
 import React from 'react'
 
 export type ArchiDescriptionProps = {
-  archiDescription: string
+  archiDescription?: string
 }
 
 export const ArchiDescription: React.FC<ArchiDescriptionProps> = (props) => {
