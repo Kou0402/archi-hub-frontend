@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { NextPage } from 'next'
-import { TextField, TextFieldProps } from 'components/atom/TextField'
-import { SelectField, SelectFieldProps } from 'components/atom/SelectField'
-import { MultipleTextField, MultipleTextFieldProps } from 'components/atom/MultipleTextField'
-import { TextareaField, TextareaFieldProps } from 'components/atom/TextareaField'
-import { BaseButton, BaseButtonProps } from 'components/atom/BaseButton'
+import { TextField, TextFieldProps } from 'components/parts/TextField'
+import { SelectField, SelectFieldProps } from 'components/parts/SelectField'
+import { MultipleTextField, MultipleTextFieldProps } from 'components/parts/MultipleTextField'
+import { TextareaField, TextareaFieldProps } from 'components/parts/TextareaField'
+import { BaseButton, BaseButtonProps } from 'components/parts/BaseButton'
 
 const Edit: NextPage = () => {
   const [appTitle, setAppTitle] = useState<string>('')

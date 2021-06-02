@@ -2,8 +2,8 @@ import React from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import axios from 'axios'
 import { API_HOST } from 'constants/const'
-import { Hero } from 'components/page/top/Hero'
-import { ArchiCard, ArchiCardProps } from 'components/common/ArchiCard'
+import { Hero } from 'components/features/Hero'
+import { ArchiCard, ArchiCardProps } from 'components/features/ArchiCard'
 
 type HomeProps = {
   archiCardPropsList: ArchiCardProps[]

@@ -3,9 +3,9 @@ import { GetServerSideProps, NextPage } from 'next'
 import axios from 'axios'
 import { ParsedUrlQuery } from 'querystring'
 import { API_HOST } from 'constants/const'
-import { ArticleHeader, ArticleHeaderProps } from 'components/page/articles/ArticleHeader'
-import { ArchiList, ArchiListProps } from 'components/page/articles/ArchiList'
-import { ArchiDescription, ArchiDescriptionProps } from 'components/page/articles/ArchiDescription'
+import { ArticleHeader, ArticleHeaderProps } from 'components/features/ArticleHeader'
+import { ArchiList, ArchiListProps } from 'components/features/ArchiList'
+import { ArchiDescription, ArchiDescriptionProps } from 'components/features/ArchiDescription'
 
 type ArticleProps = {
   articleHeaderProps: ArticleHeaderProps

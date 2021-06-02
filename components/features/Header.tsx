@@ -1,6 +1,6 @@
 import React from 'react'
-import { AppLogo } from 'components/atom/AppLogo'
-import { BaseButton } from 'components/atom/BaseButton'
+import { AppLogo } from 'components/parts/AppLogo'
+import { BaseButton } from 'components/parts/BaseButton'
 import Router from 'next/router'
 
 export const Header: React.FC = () => {
