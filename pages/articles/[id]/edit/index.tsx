@@ -5,22 +5,25 @@ import { SelectField, SelectFieldProps } from 'components/parts/SelectField'
 import { MultipleTextField, MultipleTextFieldProps } from 'components/parts/MultipleTextField'
 import { TextareaField, TextareaFieldProps } from 'components/parts/TextareaField'
 import { BaseButton, BaseButtonProps } from 'components/parts/BaseButton'
+import axios from 'axios'
+import { API_HOST } from 'constants/const'
 
 const Edit: NextPage = () => {
-  const [appTitle, setAppTitle] = useState<string>('')
-  const [appType, setAppType] = useState<string>('Webアプリ')
-  const [appScale, setAppScale] = useState<string>('中規模')
-  const [frontArchiItems, setFrontArchiItems] = useState<string[]>([])
-  const [backArchiItems, setBackArchiItems] = useState<string[]>([])
-  const [infraArchiItems, setInfraArchiItems] = useState<string[]>([])
+  const [title, setTitle] = useState<string>('')
+  const [type, setType] = useState<string>('Webアプリ')
+  const [scale, setScale] = useState<string>('中規模')
+  const [description, setDescription] = useState<string>('')
+  const [frontElements, setFrontElements] = useState<string[]>([])
+  const [backElements, setBackElements] = useState<string[]>([])
+  const [infraElements, setInfraElements] = useState<string[]>([])
+  // TODO: その他スタックを追加できるようにする
   const [etcArchiItems, setEtcArchiItems] = useState<string[]>([])
-  const [appDescription, setAppDescription] = useState<string>('')
 
   const appTitleTextFieldProps: TextFieldProps = {
     label: 'タイトル',
     required: true,
     placeholder: '例：Hogeブログシステム',
-    setState: setAppTitle,
+    setState: setTitle,
   }
   const appTypeSelectFieldProps: SelectFieldProps = {
     label: 'タイプ',
@@ -34,7 +37,7 @@ const Edit: NextPage = () => {
         label: 'スマホアプリ',
       },
     ],
-    setState: setAppType,
+    setState: setType,
   }
   const appScaleSelectFieldProps: SelectFieldProps = {
     label: '規模',
@@ -48,28 +51,28 @@ const Edit: NextPage = () => {
         label: '中規模',
       },
     ],
-    setState: setAppScale,
+    setState: setScale,
   }
   const frontArchiFieldProps: MultipleTextFieldProps = {
     label: 'フロントエンドスタック',
     required: false,
     placeholder: '例：Vue',
-    values: frontArchiItems,
-    setState: setFrontArchiItems,
+    values: frontElements,
+    setState: setFrontElements,
   }
   const backArchiFieldProps: MultipleTextFieldProps = {
     label: 'バックエンドスタック',
     required: false,
     placeholder: '例：Go',
-    values: backArchiItems,
-    setState: setBackArchiItems,
+    values: backElements,
+    setState: setBackElements,
   }
   const infraArchiFieldProps: MultipleTextFieldProps = {
     label: 'インフラスタック',
     required: false,
     placeholder: '例：AWS',
-    values: infraArchiItems,
-    setState: setInfraArchiItems,
+    values: infraElements,
+    setState: setInfraElements,
   }
   const etcArchiFieldProps: MultipleTextFieldProps = {
     label: 'その他スタック',
@@ -82,13 +85,51 @@ const Edit: NextPage = () => {
     label: '解説',
     required: false,
     placeholder: '',
-    setState: setAppDescription,
+    setState: setDescription,
+  }
+
+  type ArchiElement = {
+    element: string
+  }
+  type CreateArchiDto = {
+    title: string
+    type: string
+    scale: string
+    author: string
+    description?: string
+    frontElements?: ArchiElement[]
+    backElements?: ArchiElement[]
+    infraElements?: ArchiElement[]
+  }
+
+  const convertStringsToArchiElements = (strings: string[]): ArchiElement[] => {
+    return strings.map((value) => {
+      return {
+        element: value,
+      }
+    })
   }
   const publishButtonProps: BaseButtonProps = {
     buttonText: '公開する',
     buttonColor: 'main',
-    handleClick: () => {
+    handleClick: async () => {
       console.log('公開する')
+
+      const createArchiDto: CreateArchiDto = {
+        title,
+        type,
+        scale,
+        // TODO: 認証実装したらユーザー名にしたい
+        author: 'ゲスト',
+        description,
+        frontElements: convertStringsToArchiElements(frontElements),
+        backElements: convertStringsToArchiElements(backElements),
+        infraElements: convertStringsToArchiElements(infraElements),
+      }
+
+      const ARCHI_URI = `${API_HOST}/archis`
+      const res = await axios.post(ARCHI_URI, createArchiDto)
+      console.log(res)
     },
   }
 
