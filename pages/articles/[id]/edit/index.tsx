@@ -88,43 +88,33 @@ const Edit: NextPage = () => {
     setState: setDescription,
   }
 
-  type ArchiElement = {
-    element: string
-  }
-  type CreateArchiDto = {
+  type CreateArchiRequestDto = {
     title: string
     type: string
     scale: string
     author: string
     description?: string
-    frontElements?: ArchiElement[]
-    backElements?: ArchiElement[]
-    infraElements?: ArchiElement[]
+    frontElements?: string[]
+    backElements?: string[]
+    infraElements?: string[]
   }
 
-  const convertStringsToArchiElements = (strings: string[]): ArchiElement[] => {
-    return strings.map((value) => {
-      return {
-        element: value,
-      }
-    })
-  }
   const publishButtonProps: BaseButtonProps = {
     buttonText: '公開する',
     buttonColor: 'main',
     handleClick: async () => {
       console.log('公開する')
 
-      const createArchiDto: CreateArchiDto = {
+      const createArchiDto: CreateArchiRequestDto = {
         title,
         type,
         scale,
         // TODO: 認証実装したらユーザー名にしたい
         author: 'ゲスト',
         description,
-        frontElements: convertStringsToArchiElements(frontElements),
-        backElements: convertStringsToArchiElements(backElements),
-        infraElements: convertStringsToArchiElements(infraElements),
+        frontElements,
+        backElements,
+        infraElements,
       }
 
       const ARCHI_URI = `${API_HOST}/archis`

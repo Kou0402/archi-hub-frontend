@@ -1,12 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
+import dayjs from 'dayjs'
 
 export type ArchiCardProps = {
-  appId: string
-  appTitle: string
-  appType: 'Webアプリ' | 'スマホアプリ'
-  appScale: '個人開発' | '小規模' | '中規模' | '大規模'
-  appElements: string[]
+  id: number
+  title: string
+  type: string
+  scale: string
+  author: string
+  elements: string[]
+  updatedAt: Date
 }
 
 export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
@@ -18,18 +21,18 @@ export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
       <div className="ml-5">
         <Link href="/articles/[id]" as="/articles/testId">
           <a>
-            <h1 className="text-2xl">{props.appTitle}</h1>
+            <h1 className="text-2xl">{props.title}</h1>
           </a>
         </Link>
         <ul className="flex text-sm">
-          <li>{props.appType}</li>
-          <li className="ml-3">{props.appScale}</li>
+          <li>{props.type}</li>
+          <li className="ml-3">{props.scale}</li>
         </ul>
         <ul className="flex text-sm">
-          {props.appElements.map((appElement, i) => {
+          {props.elements.map((element, i) => {
             return (
-              <li className={i == 0 ? '' : 'ml-3'} key={appElement}>
-                {appElement}
+              <li className={i == 0 ? '' : 'ml-3'} key={element}>
+                {element}
               </li>
             )
           })}
@@ -38,8 +41,8 @@ export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
           <li>
             <img src="/archi-hub-logo.svg" width="30px"></img>
           </li>
-          <li className="ml-1">useName</li>
-          <li className="ml-1"> createdAt</li>
+          <li className="ml-1">{props.author}</li>
+          <li className="ml-1"> {dayjs(props.updatedAt).format('YYYY-MM-DD')}</li>
         </ul>
       </div>
     </article>
