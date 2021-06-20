@@ -6,7 +6,7 @@ import { MultipleTextField, MultipleTextFieldProps } from 'components/parts/Mult
 import { TextareaField, TextareaFieldProps } from 'components/parts/TextareaField'
 import { BaseButton, BaseButtonProps } from 'components/parts/BaseButton'
 import axios from 'axios'
-import { API_HOST } from 'constants/const'
+import { API_HOST, API_PATH } from 'constants/const'
 
 const Edit: NextPage = () => {
   const [title, setTitle] = useState<string>('')
@@ -103,8 +103,6 @@ const Edit: NextPage = () => {
     buttonText: '公開する',
     buttonColor: 'main',
     handleClick: async () => {
-      console.log('公開する')
-
       const createArchiDto: CreateArchiRequestDto = {
         title,
         type,
@@ -117,9 +115,7 @@ const Edit: NextPage = () => {
         infraElements,
       }
 
-      const ARCHI_URI = `${API_HOST}/archis`
-      const res = await axios.post(ARCHI_URI, createArchiDto)
-      console.log(res)
+      await axios.post(`${API_HOST}${API_PATH.ARCHIS}`, createArchiDto)
     },
   }
 

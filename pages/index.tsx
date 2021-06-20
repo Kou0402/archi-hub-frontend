@@ -1,7 +1,7 @@
 import React from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import axios from 'axios'
-import { API_HOST } from 'constants/const'
+import { API_HOST, API_PATH } from 'constants/const'
 import { Hero } from 'components/features/Hero'
 import { ArchiCard, ArchiCardProps } from 'components/features/ArchiCard'
 
@@ -32,10 +32,7 @@ type Archi = {
   updatedAt: Date
 }
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-  const ARCHI_SHORTS_URI = `${API_HOST}/archis`
-  console.info(`GET: ${ARCHI_SHORTS_URI}`)
-  const res = await axios.get<Archi[]>(ARCHI_SHORTS_URI)
-  console.info(`response: ${JSON.stringify(res.data)}`)
+  const res = await axios.get<Archi[]>(`${API_HOST}${API_PATH.ARCHIS}`)
   return { props: { archiCardPropsList: res.data } }
 }
 
