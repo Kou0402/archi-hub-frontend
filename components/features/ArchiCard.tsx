@@ -1,16 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
+import { ArchiOmit } from 'types/archi'
 
-export type ArchiCardProps = {
-  id: number
-  title: string
-  type: string
-  scale: string
-  author: string
-  elements: string[]
-  updatedAt: Date
-}
+export type ArchiCardProps = ArchiOmit
 
 export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
   return (

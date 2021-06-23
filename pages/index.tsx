@@ -4,6 +4,7 @@ import axios from 'axios'
 import { API_HOST, API_PATH } from 'constants/const'
 import { Hero } from 'components/features/Hero'
 import { ArchiCard, ArchiCardProps } from 'components/features/ArchiCard'
+import { ArchiOmit } from 'types/archi'
 
 type HomeProps = {
   archiCardPropsList: ArchiCardProps[]
@@ -22,17 +23,9 @@ const Home: NextPage<HomeProps> = (props) => {
   )
 }
 
-type Archi = {
-  id: number
-  title: string
-  type: string
-  scale: string
-  author: string
-  elements: string[]
-  updatedAt: Date
-}
+type FindAllArchiResponse = ArchiOmit[]
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-  const res = await axios.get<Archi[]>(`${API_HOST}${API_PATH.ARCHIS}`)
+  const res = await axios.get<FindAllArchiResponse>(`${API_HOST}${API_PATH.ARCHIS}`)
   return { props: { archiCardPropsList: res.data } }
 }
 

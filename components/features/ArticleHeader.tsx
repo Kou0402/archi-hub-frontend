@@ -1,12 +1,8 @@
 import React from 'react'
 import dayjs from 'dayjs'
+import { Archi } from 'types/archi'
 
-export type ArticleHeaderProps = {
-  appTitle: string
-  appType: 'Webアプリ' | 'スマホアプリ'
-  author: string
-  createdAt: Date
-}
+export type ArticleHeaderProps = Pick<Archi, 'title' | 'type' | 'author' | 'createdAt'>
 
 export const ArticleHeader: React.FC<ArticleHeaderProps> = (props) => {
   return (
@@ -19,7 +15,7 @@ export const ArticleHeader: React.FC<ArticleHeaderProps> = (props) => {
         <li className="ml-1"> {dayjs(props.createdAt).format('YYYY-MM-DD')}</li>
       </ul>
       <img src="/web-icon.svg" width="80px" className="ml-auto mr-auto mt-4"></img>
-      <h1 className="mt-6 text-2xl">{props.appTitle}</h1>
+      <h1 className="mt-6 text-2xl">{props.title}</h1>
     </section>
   )
 }

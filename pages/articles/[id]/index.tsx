@@ -2,10 +2,11 @@ import React from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import axios from 'axios'
 import { ParsedUrlQuery } from 'querystring'
-import { API_HOST } from 'constants/const'
+import { API_HOST, API_PATH } from 'constants/const'
 import { ArticleHeader, ArticleHeaderProps } from 'components/features/ArticleHeader'
 import { ArchiList, ArchiListProps } from 'components/features/ArchiList'
 import { ArchiDescription, ArchiDescriptionProps } from 'components/features/ArchiDescription'
+import { Archi } from 'types/archi'
 
 type ArticleProps = {
   articleHeaderProps: ArticleHeaderProps
@@ -38,47 +39,45 @@ const Article: NextPage<ArticleProps> = (props) => {
 type PathParams = ParsedUrlQuery & {
   id: string
 }
-type Archi = {
-  appId: string
-  appTitle: string
-  appType: 'Webアプリ' | 'スマホアプリ'
-  appScale: '個人開発' | '小規模' | '中規模' | '大規模'
-  author: string
-  createdAt: Date
-  frontElements?: string[]
-  backElements?: string[]
-  infraElements?: string[]
-  archiDescription?: string
-}
+type FindOneArchiResponse = Pick<
+  Archi,
+  | 'id'
+  | 'title'
+  | 'type'
+  | 'scale'
+  | 'author'
+  | 'description'
+  | 'frontElements'
+  | 'backElements'
+  | 'infraElements'
+  | 'createdAt'
+>
 export const getServerSideProps: GetServerSideProps<ArticleProps, PathParams> = async ({
   params,
 }) => {
-  const ARCHI_SHORTS_URI = `${API_HOST}/archis/${params?.id}`
-  console.info(`GET: ${ARCHI_SHORTS_URI}`)
-  const res = await axios.get<Archi>(ARCHI_SHORTS_URI)
-  console.info(`response: ${JSON.stringify(res.data)}`)
+  const res = await axios.get<FindOneArchiResponse>(`${API_HOST}${API_PATH.ARCHIS}/${params?.id}`)
 
   const articleProps: ArticleProps = {
     articleHeaderProps: {
-      appTitle: res.data.appTitle,
-      appType: res.data.appType,
+      title: res.data.title,
+      type: res.data.type,
       author: res.data.author,
       createdAt: res.data.createdAt,
     },
     frontArchiListProps: {
       archiAreaType: 'フロントエンド',
-      archiElements: res.data.frontElements,
+      elements: res.data.frontElements,
     },
     backArchiListProps: {
       archiAreaType: 'バックエンド',
-      archiElements: res.data.backElements,
+      elements: res.data.backElements,
     },
     infraArchiListProps: {
       archiAreaType: 'インフラ',
-      archiElements: res.data.infraElements,
+      elements: res.data.infraElements,
     },
     archiDescriptionProps: {
-      archiDescription: res.data.archiDescription,
+      description: res.data.description,
     },
   }
   return { props: articleProps }

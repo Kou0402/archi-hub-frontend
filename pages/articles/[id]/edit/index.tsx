@@ -7,6 +7,7 @@ import { TextareaField, TextareaFieldProps } from 'components/parts/TextareaFiel
 import { BaseButton, BaseButtonProps } from 'components/parts/BaseButton'
 import axios from 'axios'
 import { API_HOST, API_PATH } from 'constants/const'
+import { Archi, Scale, Type } from 'types/archi'
 
 const Edit: NextPage = () => {
   const [title, setTitle] = useState<string>('')
@@ -88,25 +89,25 @@ const Edit: NextPage = () => {
     setState: setDescription,
   }
 
-  type CreateArchiRequestDto = {
-    title: string
-    type: string
-    scale: string
-    author: string
-    description?: string
-    frontElements?: string[]
-    backElements?: string[]
-    infraElements?: string[]
-  }
-
+  type CreateArchiRequestDto = Pick<
+    Archi,
+    | 'title'
+    | 'type'
+    | 'scale'
+    | 'author'
+    | 'description'
+    | 'frontElements'
+    | 'backElements'
+    | 'infraElements'
+  >
   const publishButtonProps: BaseButtonProps = {
     buttonText: '公開する',
     buttonColor: 'main',
     handleClick: async () => {
       const createArchiDto: CreateArchiRequestDto = {
         title,
-        type,
-        scale,
+        type: type as Type,
+        scale: scale as Scale,
         // TODO: 認証実装したらユーザー名にしたい
         author: 'ゲスト',
         description,
