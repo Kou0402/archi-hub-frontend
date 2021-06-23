@@ -12,7 +12,7 @@ export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
         <img src="/web-icon.svg"></img>
       </a>
       <div className="ml-5">
-        <Link href="/articles/[id]" as="/articles/testId">
+        <Link href="/articles/[id]" as={`/articles/${props.id}`}>
           <a>
             <h1 className="text-2xl">{props.title}</h1>
           </a>
@@ -22,7 +22,7 @@ export const ArchiCard: React.FC<ArchiCardProps> = (props) => {
           <li className="ml-3">{props.scale}</li>
         </ul>
         <ul className="flex text-sm">
-          {props.elements.map((element, i) => {
+          {props.elements?.map((element, i) => {
             return (
               <li className={i == 0 ? '' : 'ml-3'} key={element}>
                 {element}
