@@ -1,7 +1,7 @@
 import React from 'react'
 import { GetServerSideProps, NextPage } from 'next'
 import axios from 'axios'
-import { API_HOST, API_PATH } from 'constants/const'
+import { API_HOST, API_PATH } from 'constants/api'
 import { Hero } from 'components/features/Hero'
 import { ArchiCard, ArchiCardProps } from 'components/features/ArchiCard'
 import { ArchiOmit } from 'types/archi'

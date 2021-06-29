@@ -1,9 +1,11 @@
 import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 export type TextareaFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string
   required: boolean
-  setState: React.Dispatch<React.SetStateAction<string>>
+  register: UseFormRegisterReturn
+  errorMessage?: string
 }
 
 export const TextareaField: React.FC<TextareaFieldProps> = (props) => {
@@ -20,10 +22,10 @@ export const TextareaField: React.FC<TextareaFieldProps> = (props) => {
         id={props.label}
         placeholder={props.placeholder}
         rows={5}
-        onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-          props.setState(e.target.value)
-        }}
+        {...props.register}
+        autoComplete="off"
       />
+      <p>{props.errorMessage}</p>
     </div>
   )
 }

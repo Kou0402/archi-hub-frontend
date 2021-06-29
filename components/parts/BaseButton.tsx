@@ -1,7 +1,7 @@
-export type BaseButtonProps = {
+export type BaseButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonText: string
   buttonColor: 'main' | 'white'
-  handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const BaseButton: React.FC<BaseButtonProps> = (props) => {
@@ -14,6 +14,7 @@ export const BaseButton: React.FC<BaseButtonProps> = (props) => {
       className={`${backgroundColor} ${textColor} ${hoverdBackgroundColor} text-sm
         focus:outline-none font-bold py-2 px-3 rounded`}
       onClick={props.handleClick}
+      type="submit"
     >
       {props.buttonText}
     </button>

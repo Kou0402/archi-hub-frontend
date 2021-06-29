@@ -1,9 +1,11 @@
 import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 export type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string
   required: boolean
-  setState: React.Dispatch<React.SetStateAction<string>>
+  register: UseFormRegisterReturn
+  errorMessage?: string
 }
 
 export const TextField: React.FC<TextFieldProps> = (props) => {
@@ -20,10 +22,10 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
           w-full py-2 px-2 bg-white placeholder-light shadow-sm text-base
           focus:outline-none focus:ring-2 focus:ring-main"
         placeholder={props.placeholder}
-        onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
-          props.setState(e.target.value)
-        }}
+        {...props.register}
+        autoComplete="off"
       />
+      <p>{props.errorMessage}</p>
     </div>
   )
 }

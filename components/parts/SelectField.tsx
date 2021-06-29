@@ -1,9 +1,11 @@
 import React from 'react'
+import { UseFormRegisterReturn } from 'react-hook-form'
 
 export type SelectFieldProps = {
   label?: string
   options: React.OptionHTMLAttributes<HTMLOptionElement>[]
-  setState: React.Dispatch<React.SetStateAction<string>>
+  register: UseFormRegisterReturn
+  errorMessage?: string
 }
 
 export const SelectField: React.FC<SelectFieldProps> = (props) => {
@@ -14,7 +16,7 @@ export const SelectField: React.FC<SelectFieldProps> = (props) => {
         id={props.label}
         className="block w-full py-2 px-1 border border-lighter bg-white rounded-md shadow-sm
           focus:outline-none focus:ring-2 focus:ring-main text-base"
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => props.setState(e.target.value)}
+        {...props.register}
       >
         {props.options.map((option, i) => {
           return (

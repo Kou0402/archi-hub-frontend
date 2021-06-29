@@ -6,26 +6,51 @@ import { MultipleTextField, MultipleTextFieldProps } from 'components/parts/Mult
 import { TextareaField, TextareaFieldProps } from 'components/parts/TextareaField'
 import { BaseButton, BaseButtonProps } from 'components/parts/BaseButton'
 import axios from 'axios'
-import { API_HOST, API_PATH } from 'constants/const'
+import { API_HOST, API_PATH } from 'constants/api'
 import { Archi, Scale, Type } from 'types/archi'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { convertMessage } from 'utils/functions'
+import { MESSAGE } from 'constants/message'
 
 const Edit: NextPage = () => {
-  const [title, setTitle] = useState<string>('')
-  const [type, setType] = useState<string>('Webアプリ')
-  const [scale, setScale] = useState<string>('中規模')
-  const [description, setDescription] = useState<string>('')
+  const schema = yup.object().shape({
+    title: yup
+      .string()
+      .required(convertMessage(MESSAGE.REQUIRED, 'タイトル'))
+      .max(100, convertMessage(MESSAGE.MAX_LENGTH, 'タイトル', '100')),
+  })
+  // React-Hook-Form で管理されるフォームの型。
+  // elements のフィールドコンポーネントは特殊仕様のため除外し、useState で管理する。
+  type ArchiFormWithoutElements = Pick<Archi, 'title' | 'type' | 'scale' | 'description'>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ArchiFormWithoutElements>({
+    mode: 'onTouched',
+    defaultValues: {
+      type: 'Webアプリ',
+      scale: '中規模',
+    },
+    resolver: yupResolver(schema),
+  })
+
   const [frontElements, setFrontElements] = useState<string[]>([])
   const [backElements, setBackElements] = useState<string[]>([])
   const [infraElements, setInfraElements] = useState<string[]>([])
   // TODO: その他スタックを追加できるようにする
-  const [etcArchiItems, setEtcArchiItems] = useState<string[]>([])
+  // const [etcArchiItems, setEtcArchiItems] = useState<string[]>([])
 
   const appTitleTextFieldProps: TextFieldProps = {
     label: 'タイトル',
     required: true,
     placeholder: '例：Hogeブログシステム',
-    setState: setTitle,
+    register: register('title'),
+    errorMessage: errors.title?.message,
   }
+
   const appTypeSelectFieldProps: SelectFieldProps = {
     label: 'タイプ',
     options: [
@@ -38,7 +63,8 @@ const Edit: NextPage = () => {
         label: 'スマホアプリ',
       },
     ],
-    setState: setType,
+    register: register('type'),
+    errorMessage: errors.type?.message,
   }
   const appScaleSelectFieldProps: SelectFieldProps = {
     label: '規模',
@@ -52,7 +78,8 @@ const Edit: NextPage = () => {
         label: '中規模',
       },
     ],
-    setState: setScale,
+    register: register('scale'),
+    errorMessage: errors.scale?.message,
   }
   const frontArchiFieldProps: MultipleTextFieldProps = {
     label: 'フロントエンドスタック',
@@ -75,18 +102,18 @@ const Edit: NextPage = () => {
     values: infraElements,
     setState: setInfraElements,
   }
-  const etcArchiFieldProps: MultipleTextFieldProps = {
-    label: 'その他スタック',
-    required: false,
-    placeholder: '',
-    values: etcArchiItems,
-    setState: setEtcArchiItems,
-  }
   const descriptionFieldProps: TextareaFieldProps = {
     label: '解説',
     required: false,
     placeholder: '',
-    setState: setDescription,
+    register: register('description'),
+    errorMessage: errors.description?.message,
+  }
+
+  const publishButtonProps: BaseButtonProps = {
+    buttonText: '公開する',
+    buttonColor: 'main',
+    type: 'submit',
   }
 
   type CreateArchiRequestDto = Pick<
@@ -100,55 +127,50 @@ const Edit: NextPage = () => {
     | 'backElements'
     | 'infraElements'
   >
-  const publishButtonProps: BaseButtonProps = {
-    buttonText: '公開する',
-    buttonColor: 'main',
-    handleClick: async () => {
-      const createArchiDto: CreateArchiRequestDto = {
-        title,
-        type: type as Type,
-        scale: scale as Scale,
-        // TODO: 認証実装したらユーザー名にしたい
-        author: 'ゲスト',
-        description,
-        frontElements,
-        backElements,
-        infraElements,
-      }
+  const onSubmit = async (form: ArchiFormWithoutElements) => {
+    const createArchiDto: CreateArchiRequestDto = {
+      title: form.title,
+      type: form.type as Type,
+      scale: form.scale as Scale,
+      //   // TODO: 認証実装したらユーザー名にしたい
+      author: 'ゲスト',
+      description: form.description,
+      frontElements,
+      backElements,
+      infraElements,
+    }
 
-      await axios.post(`${API_HOST}${API_PATH.ARCHIS}`, createArchiDto)
-    },
+    await axios.post(`${API_HOST}${API_PATH.ARCHIS}`, createArchiDto)
   }
 
   return (
     <main className="p-2 text-lg">
-      <div>
-        <TextField {...appTitleTextFieldProps}></TextField>
-      </div>
-      <div className="mt-2">
-        <SelectField {...appTypeSelectFieldProps}></SelectField>
-      </div>
-      <div className="mt-2">
-        <SelectField {...appScaleSelectFieldProps}></SelectField>
-      </div>
-      <div className="mt-2">
-        <MultipleTextField {...frontArchiFieldProps}></MultipleTextField>
-      </div>
-      <div className="mt-2">
-        <MultipleTextField {...backArchiFieldProps}></MultipleTextField>
-      </div>
-      <div className="mt-2">
-        <MultipleTextField {...infraArchiFieldProps}></MultipleTextField>
-      </div>
-      <div className="mt-2">
-        <MultipleTextField {...etcArchiFieldProps}></MultipleTextField>
-      </div>
-      <div className="mt-2">
-        <TextareaField {...descriptionFieldProps}></TextareaField>
-      </div>
-      <div className="flex justify-center mt-2">
-        <BaseButton {...publishButtonProps}></BaseButton>
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <TextField {...appTitleTextFieldProps}></TextField>
+        </div>
+        <div className="mt-2">
+          <SelectField {...appTypeSelectFieldProps}></SelectField>
+        </div>
+        <div className="mt-2">
+          <SelectField {...appScaleSelectFieldProps}></SelectField>
+        </div>
+        <div className="mt-2">
+          <MultipleTextField {...frontArchiFieldProps}></MultipleTextField>
+        </div>
+        <div className="mt-2">
+          <MultipleTextField {...backArchiFieldProps}></MultipleTextField>
+        </div>
+        <div className="mt-2">
+          <MultipleTextField {...infraArchiFieldProps}></MultipleTextField>
+        </div>
+        <div className="mt-2">
+          <TextareaField {...descriptionFieldProps}></TextareaField>
+        </div>
+        <div className="flex justify-center mt-2">
+          <BaseButton {...publishButtonProps}></BaseButton>
+        </div>
+      </form>
     </main>
   )
 }
